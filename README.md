@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/idealista/tlsh-js.svg?branch=master)](https://travis-ci.org/idealista/tlsh-js)
 
-TLSH is a fuzzy matching library designed by [Trend Micro](http://www.trendmicro.com) (Hosted in [GitHub](https://github.com/trendmicro/tlsh)) 
+TLSH is a fuzzy matching library designed by [Trend Micro](http://www.trendmicro.com) (Hosted in [GitHub](https://github.com/trendmicro/tlsh))
 
 Given a byte stream with a minimum length of 512 characters (and a minimum amount of randomness), TLSH generates a hash value which can be used for similarity comparisons. Similar objects will have similar hash values which allows for the detection of similar objects by comparing their hash values. Note that the byte stream should have a sufficient amount of complexity. For example, a byte stream of identical bytes will not generate a hash value.
 
@@ -32,7 +32,7 @@ var str = "The best documentation is the UNIX source. After all, this is what th
             "you find options described in the manual that are unimplemented " +
             "and ignored by the source.";
 
-var hash = hash(str);   
+var hash = hash(str);
 ```
 
 The resultant hash will be _6FF02BEF718027B0160B4391212923ED7F1A463D563B1549B86CF62973B197AD2731F8_ as is described in the TLSH unit tests.
@@ -41,7 +41,7 @@ The resultant hash will be _6FF02BEF718027B0160B4391212923ED7F1A463D563B1549B86C
 
 The input data must contain:
 
-* At least 512 characters. 
+* At least 512 characters.
 * A certain amount of randomness.
 
 to generate a hash value. In other case an **InsufficientComplexityError** will be thrown.
@@ -87,6 +87,54 @@ We have adopted the original Trend Locality Sensitive Hashing design choices to 
 
 * Complete Data Tests using input data and resulting digests from Trend Micro official repository.
 
-## License 
+## License
 
 Read [LICENSE.txt](LICENSE.txt) attached to the project
+
+
+## CLI Instalation
+
+TLSH can be used as a command line application as well.
+
+```shell
+npm install -g tlsh
+```
+
+### Get hash of single file
+
+```shell
+lsh samples/lorem
+#2B6167767E4E17015FD121BDE3D8883EFBD8E04427C29398E8B7EA29E61662CD303194
+```
+
+```shell
+lsh samples/random
+#D4613BA06BC67DD8805446F4D8BC392E0B11470A2F1091B29232EB946BF732936FAC59
+```
+
+### Compare two files
+
+The lower the score, the more similarly the two files are. 0 means very similar. 200 means very different.
+
+
+```shell
+lsh samples/lorem samples/random
+#263
+```
+
+```shell
+lsh samples/random samples/random
+#0
+```
+
+## Compare two files (by hash)
+
+```shell
+lsh -h 2B6167767E4E17015FD121BDE3D8883EFBD8E04427C29398E8B7EA29E61662CD303194 D4613BA06BC67DD8805446F4D8BC392E0B11470A2F1091B29232EB946BF732936FAC59
+#251
+```
+
+```shell
+lsh D4613BA06BC67DD8805446F4D8BC392E0B11470A2F1091B29232EB946BF732936FAC59 D4613BA06BC67DD8805446F4D8BC392E0B11470A2F1091B29232EB946BF732936FAC59
+#0
+```
